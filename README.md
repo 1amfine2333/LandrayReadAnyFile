@@ -1,6 +1,6 @@
-# ApacheSolrReadAnyFile
+# LandrayReadAnyFile
 
-Apache Solr <= 8.8.1 存在任意文件读取漏洞，可读取服务器任意文件和目录。
+Landray 蓝凌OA 存在任意文件读取漏洞，可读取服务器任意文件和目录。
 
 ## 环境
 
@@ -13,7 +13,7 @@ OS：ALL
 clone
 
 ```
-git clone https://github.com/Cr4y0nXX/ApacheSolrReadAnyFile.git
+git clone https://github.com/Cr4y0nXX/LandrayReadAnyFile.git
 ```
 
 ## POC
