@@ -70,7 +70,7 @@ optional arguments:
 ### 演示
 
 ```
-python ApacheSolrReadAnyFile_EXP.py -u 1*****3:8983
+python ApacheSolrReadAnyFile_EXP.py -u 127.0.0.1:8090
 ```
 
 ![image-20210508165045159](./README.assets/image-20210508165045159.png)
