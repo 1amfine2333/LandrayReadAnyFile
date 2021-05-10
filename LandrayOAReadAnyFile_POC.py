@@ -65,7 +65,7 @@ class POC:
         parser.add_argument("-f", "--file", required=False, type=str, default=f"./url.txt", help=f"The url file, default is ./url.txt")
         parser.add_argument("-t", "--thread", required=False, type=int, default=32, help=f"Number of thread, default is 32")
         parser.add_argument("-T", "--timeout", required=False, type=int, default=3,  help="request timeout(default 3)")
-        parser.add_argument("-o", "--output", required=False, type=str, default=f"./{date}.txt",  help=f"Vuln url output file, default is ./{date}.txt")
+        parser.add_argument("-o", "--output", required=False, type=str, default=f"{date}.txt",  help=f"Vuln url output file, default is {date}.txt")
         return parser.parse_args()
 
     # 验证漏洞
