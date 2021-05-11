@@ -12,6 +12,8 @@ from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 from argparse import ArgumentParser
 
+requests.packages.urllib3.disable_warnings()
+
 class POC:
     def __init__(self):
         self.banner()
