@@ -18,7 +18,7 @@ clone
 git clone https://github.com/Cr4y0nXX/LandrayReadAnyFile.git
 ```
 
-## POC
+## 🚀POC
 
 使用多线程方式批量对目标url进行漏洞探测，并输出结果。
 
