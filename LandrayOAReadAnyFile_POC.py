@@ -12,6 +12,8 @@ from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 from argparse import ArgumentParser
 
+requests.packages.urllib3.disable_warnings()
+
 class POC:
     def __init__(self):
         self.banner()
@@ -114,7 +116,7 @@ class POC:
             fileData = rep.text
             return fileData
         except:
-            return ""
+            return "Conn"
 
     # 加载url地址(带http://)
     def loadURL(self):
