@@ -46,7 +46,7 @@ optional arguments:
 ### 演示
 
 ```
-python ApacheSolrReadAnyFile_POC.py -f ./1.txt
+python LandrayOAReadAnyFile_POC.py -f ./1.txt
 ```
 
 ![image-20210508165613659](./README.assets/image-20210508165613659.png)
@@ -72,7 +72,7 @@ optional arguments:
 ### 演示
 
 ```
-python ApacheSolrReadAnyFile_EXP.py -u ip:port
+python LandrayOAReadAnyFile_EXP.py -u ip:port
 ```
 
 ![image-20210508165045159](./README.assets/image-20210508165045159.png)
@@ -86,7 +86,7 @@ python ApacheSolrReadAnyFile_EXP.py -u ip:port
 ### 演示
 
 ```
-python ApacheSolrReadAnyFile_EXP_passExport.py -f 1.txt
+python LandrayOAReadAnyFile_EXP_passExport.py -f 1.txt
 ```
 
 ![image](./README.assets/image.png)
