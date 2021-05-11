@@ -89,7 +89,7 @@ python ApacheSolrReadAnyFile_EXP.py -u ip:port
 python ApacheSolrReadAnyFile_EXP_passExport.py -f 1.txt
 ```
 
-![image-20210508165045159](./README.assets/image-20210508165045159.png)
+![image](./README.assets/image.png)
 
 即可得到所有存在漏洞的系统管理员密码，并输出到文件。
 
