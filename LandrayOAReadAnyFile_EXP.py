@@ -9,6 +9,8 @@ import json
 import requests
 from argparse import ArgumentParser
 
+requests.packages.urllib3.disable_warnings()
+
 class EXP:
     def __init__(self):
         self.banner()
